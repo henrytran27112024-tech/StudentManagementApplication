@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-app-api
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: student-app-api
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: student-app-api
+    spec:
+      containers:
+        - name: student-app-api
+          image: IMAGE_URI
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: connection-string
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: student-app-api-service
+spec:
+  selector:
+    app: student-app-api
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

@@ -1,0 +1,44 @@
+# Cấu hình số lượng Replica ban đầu
+replicaCount: 2
+
+image:
+  repository: 123456789012.dkr.ecr.ap-southeast-1.amazonaws.com/student-app # Thay bằng URI ECR của bạn
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+# Cấu hình Service
+service:
+  type: NodePort # AWS ALB Ingress thường dùng NodePort hoặc IP mode
+  port: 80
+  targetPort: 3000 # Port ứng dụng của bạn chạy (VD: NodeJS chạy port 3000)
+
+# Cấu hình Ingress (Quan trọng cho AWS ALB)
+ingress:
+  enabled: true
+  className: "alb" # Sử dụng AWS Load Balancer Controller
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: student-group
+  hosts:
+    - host: student-app.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Cấu hình tài nguyên (Resource Request/Limit)
+resources: 
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+# Cấu hình Auto Scaling (HPA)
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80

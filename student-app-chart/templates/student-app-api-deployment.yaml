@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: student-app-api
+spec:
+  selector:
+    matchLabels:
+      app: student-app-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: student-app-api
+    spec:
+      containers:
+        - name: student-app-api
+          image: 430950558682.dkr.ecr.ap-southeast-1.amazonaws.com/devops-final-assignment-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_URL
+              value: mongodb://mongo:27017/dev
