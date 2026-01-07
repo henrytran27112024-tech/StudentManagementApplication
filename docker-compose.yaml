@@ -6,7 +6,7 @@ services:
       - 27017:27017
   api:
     build:
-      context: spring-boot-student-app-api
+      context: spring-boot-student-app-apii
       dockerfile: Dockerfile
     environment:
       - SPRING_PROFILES_ACTIVE=local
