@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: student-app-api
+  name: my-student-management-api
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: student-app-api
+      app: my-student-management-api
   replicas: 2
   template:
     metadata:
       labels:
-        app: student-app-api
+        app: my-student-management-api
     spec:
       containers:
-        - name: student-app-api
+        - name: my-student-management-api
           image: IMAGE_URI
           imagePullPolicy: Always
           ports:
@@ -29,10 +29,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: student-app-api-service
+  name: my-student-management-api-service
 spec:
   selector:
-    app: student-app-api
+    app: my-student-management-api
   ports:
     - protocol: TCP
       port: 8080

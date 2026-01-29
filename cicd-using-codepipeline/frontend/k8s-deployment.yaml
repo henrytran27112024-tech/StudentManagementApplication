@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: student-app-client
+  name: my-student-management-client
   namespace: default
 spec:
   selector:
     matchLabels:
-      app: student-app-client
+      app: my-student-management-client
   replicas: 2
   template:
     metadata:
       labels:
-        app: student-app-client
+        app: my-student-management-client
     spec:
       containers:
-        - name: student-app-client
+        - name: my-student-management-client
           image: IMAGE_URI
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:
             - name: REACT_APP_API_URL
-              value: "http://student-app-api-service:8080"
+              value: "http://my-student-management-api-service:8080"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: student-app-client-service
+  name: my-student-management-client-service
 spec:
   selector:
-    app: student-app-client
+    app: my-student-management-client
   ports:
     - protocol: TCP
       port: 80
@@ -39,7 +39,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: student-app-ingress
+  name: my-student-management-ingress
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -52,13 +52,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: student-app-api-service
+                name: my-student-management-api-service
                 port:
                   number: 8080
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: student-app-client-service
+                name: my-student-management-client-service
                 port:
                   number: 80
