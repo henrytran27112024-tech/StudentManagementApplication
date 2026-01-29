@@ -86,11 +86,3 @@ terraform init
 terraform plan
 terraform apply
 ```
-
-## Tác giả
-
-Project được tùy chỉnh và phát triển bởi [Tên của bạn]
-
-## License
-
-MIT License
